@@ -136,18 +136,26 @@ public class BBLogger {
 	}
 	
 	
-	public void debug(String str) {
+	public void debug(Object obj) {
 		
 		try {
 			if (this.logLevel < 5) {
 				return;
 			}
 			
-			if (str == null) {
+			String str = null;
+			
+			if (obj == null) {
 				str = "null";
+				
+			} else if (obj instanceof Throwable) {
+				str = getStackTraceString((Throwable) obj);
+				
+			} else {
+				str = obj.toString();
 			}
 			
-			str = "[debug]" + getTimeForLog() + str;
+			str = "[debug]" + getTimeForLog() + obj.toString();
 			
 			if (bConsoleMode) {
 				System.out.println(str);
@@ -161,15 +169,23 @@ public class BBLogger {
 	}
 	
 	
-	public void info(String str) {
+	public void info(Object obj) {
 		
 		try {
 			if (this.logLevel < 3) {
 				return;
 			}
 	
-			if (str == null) {
+			String str = null;
+			
+			if (obj == null) {
 				str = "null";
+				
+			} else if (obj instanceof Throwable) {
+				str = getStackTraceString((Throwable) obj);
+				
+			} else {
+				str = obj.toString();
 			}
 			
 			str = "[info]" + getTimeForLog() + str;
@@ -186,15 +202,23 @@ public class BBLogger {
 	}
 	
 	
-	public void error(String str) {
+	public void error(Object obj) {
 		
 		try {
 			if (this.logLevel < 1) {
 				return;
 			}
 	
-			if (str == null) {
+			String str = null;
+			
+			if (obj == null) {
 				str = "null";
+				
+			} else if (obj instanceof Throwable) {
+				str = getStackTraceString((Throwable) obj);
+				
+			} else {
+				str = obj.toString();
 			}
 			
 			str = "[error]" + getTimeForLog() + str;
@@ -210,69 +234,6 @@ public class BBLogger {
 		}
 	}
 
-	
-	public void debug(Throwable throwable) {
-		
-		try {
-			if (this.logLevel < 5) {
-				return;
-			}
-			
-			String str = "[error]" + getTimeForLog() + getStackTraceString(throwable);
-			
-			if (bConsoleMode) {
-				System.out.println(str);
-			}
-			
-			writeToFile(str);
-		
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
-	public void info(Throwable throwable) {
-		
-		try {
-			if (this.logLevel < 3) {
-				return;
-			}
-	
-			String str = "[info]" + getTimeForLog() + getStackTraceString(throwable);
-			
-			if (bConsoleMode) {
-				System.out.println(str);
-			}
-			
-			writeToFile(str);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
-	public void error(Throwable throwable) {
-		
-		try {
-			if (this.logLevel < 1) {
-				return;
-			}
-	
-			String str = "[error]" + getTimeForLog() + getStackTraceString(throwable);
-			
-			if (bConsoleMode) {
-				System.err.println(str);
-			}
-			
-			writeToFile(str);
-		
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	
 	private String getStackTraceString(Throwable throwable) {
 		if (throwable == null) {
