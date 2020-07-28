@@ -1,4 +1,4 @@
-package com.bb.logger;
+package com.thkmon.bblogger;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,6 +9,8 @@ import java.util.Calendar;
 
 public class BBLogger {
 
+	private String version = "200728";
+	
 	private boolean bConsoleMode = true;
 	private int logLevel = 5;
 	private File logDirObj = null;
@@ -51,13 +53,14 @@ public class BBLogger {
 	public BBLogger(String logDirPath, String logName) {
 		
 		try {
-			
 			if (logDirPath == null || logDirPath.length() == 0) {
-				throw new Exception("BBLogger : logDirPath is null or empty");
+				System.err.println("BBLogger : logDirPath is null or empty.");
+				return;
 			}
 			
 			if (logName == null || logName.length() == 0) {
-				throw new Exception("BBLogger : logName is null or empty");
+				System.err.println("BBLogger : logName is null or empty.");
+				return;
 			}
 			
 			if (logName.indexOf("/") > -1) {
@@ -75,11 +78,13 @@ public class BBLogger {
 			File logDir = new File(logDirPath);
 			String dirPath = revisePath(logDir.getAbsolutePath());
 			if (!logDir.exists()) {
-				throw new Exception("BBLogger : this directory not exists [" + dirPath + "]");
+				System.err.println("BBLogger : this directory not exists [" + dirPath + "]");
+				return;
 			}
 			
 			if (!logDir.isDirectory()) {
-				throw new Exception("BBLogger : this path is not directory [" + dirPath + "]");
+				System.err.println("BBLogger : this path is not directory [" + dirPath + "]");
+				return;
 			}
 			
 			this.logNameText = logName;
@@ -87,6 +92,9 @@ public class BBLogger {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			
+			this.logNameText = null;
+			this.logDirObj = null;
 		}
 	}
 	
@@ -260,6 +268,10 @@ public class BBLogger {
 	
 	
 	private void writeToFile(String str) throws Exception {
+		if (this.logDirObj == null) {
+			return;
+		}
+		
 		if (str == null || str.length() == 0) {
 			return;
 		}

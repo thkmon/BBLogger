@@ -1,4 +1,4 @@
-package com.bb.logger;
+package com.thkmon.bblogger;
 
 public class BBLoggerExample {
 
